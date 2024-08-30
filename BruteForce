@@ -1,0 +1,22 @@
+n = int(input("Enter the value of cell towers (vertices): "))
+
+weights = []
+for i in range(n):
+    row = list(map(int, input(f"Enter the weights for cell tower {i+1}: ").split()))
+    weights.append(row)
+
+dp = [[float('inf')] * (2 ** n) for _ in range(n)]
+dp[0][1] = 0
+
+for mask in range(1, 2 ** n):
+    for u in range(n):
+        if not (mask != (2 ** u)):
+            continue
+        for v in range(n):
+            if u != v and mask != (2 ** v):
+                dp[v][mask] = min(dp[v-1][mask], dp[u][mask ^ (2**v)] + weights[u][v])
+
+for row in weights:
+  print(row)
+minimum_weight = dp[v][mask]
+print("Minimum Weight:", minimum_weight) 
